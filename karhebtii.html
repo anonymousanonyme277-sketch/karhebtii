@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>كرهبتي - منصة كراء السيارات في تونس</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Tajawal',sans-serif;background:#0a0a0a;color:#fff;line-height:1.6}
+.header{position:fixed;top:0;left:0;right:0;padding:15px 30px;background:rgba(10,10,10,0.95);backdrop-filter:blur(20px);z-index:1000;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:24px;font-weight:900;letter-spacing:1px;color:#fff;text-decoration:none}
+.logo span{color:#E53935}
+.nav{display:flex;gap:25px;align-items:center}
+.nav a{color:#888;text-decoration:none;font-size:14px;transition:color .3s}
+.nav a:hover{color:#fff}
+.btn{padding:10px 20px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;border:none;transition:all .3s;font-family:'Tajawal',sans-serif}
+.btn-red{background:#E53935;color:#fff}
+.btn-red:hover{background:#c62828;transform:translateY(-2px)}
+.btn-outline{background:transparent;color:#fff;border:2px solid #2a2a2a}
+.btn-outline:hover{border-color:#E53935;color:#E53935}
+.hero{min-height:100vh;display:flex;align-items:center;padding:100px 30px 60px;background:linear-gradient(135deg,#0a0a0a 0%,#141414 100%);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 20% 50%,rgba(229,57,53,0.12) 0%,transparent 50%)}
+.hero-content{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;position:relative;z-index:2}
+.hero h1{font-size:48px;font-weight:900;line-height:1.15;margin-bottom:20px}
+.hero h1 span{color:#E53935;text-shadow:0 0 30px rgba(229,57,53,0.3)}
+.hero p{font-size:17px;color:#888;max-width:450px;margin-bottom:30px;line-height:1.7}
+.hero-buttons{display:flex;gap:12px;flex-wrap:wrap}
+.hero-stats{display:flex;gap:30px;margin-top:40px;padding-top:30px;border-top:1px solid #2a2a2a}
+.hero-stat-number{font-size:26px;font-weight:900;color:#E53935}
+.hero-stat-label{font-size:13px;color:#888}
+.car-svg{width:100%;max-width:450px;filter:drop-shadow(0 15px 40px rgba(229,57,53,0.2));animation:float 5s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+.search-section{position:relative;z-index:10;margin-top:-40px;padding:0 30px}
+.search-box{max-width:1000px;margin:0 auto;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:14px;padding:25px;display:grid;grid-template-columns:1.5fr 1fr 1fr auto;gap:14px;align-items:end}
+.search-field{display:flex;flex-direction:column;gap:6px}
+.search-field label{font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:1px}
+.search-field select,.search-field input{padding:12px 14px;background:#141414;border:2px solid #2a2a2a;border-radius:8px;color:#fff;font-family:'Tajawal',sans-serif;font-size:13px;outline:none}
+.search-field select:focus,.search-field input:focus{border-color:#E53935}
+.search-btn{padding:12px 24px;background:#E53935;color:#fff;border:none;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;transition:all .3s;font-family:'Tajawal',sans-serif}
+.search-btn:hover{background:#c62828}
+.section{padding:60px 30px}
+.section-title{text-align:center;font-size:32px;font-weight:900;margin-bottom:14px}
+.section-subtitle{text-align:center;color:#888;font-size:15px;max-width:500px;margin:0 auto 40px}
+.cars-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;max-width:1200px;margin:0 auto}
+.car-card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:14px;overflow:hidden;transition:all .3s;cursor:pointer}
+.car-card:hover{transform:translateY(-6px);border-color:rgba(229,57,53,0.2)}
+.car-img{height:180px;overflow:hidden;position:relative}
+.car-img img{width:100%;height:100%;object-fit:cover}
+.car-badge{position:absolute;top:10px;left:10px;padding:4px 10px;border-radius:50px;font-size:10px;font-weight:700;text-transform:uppercase}
+.badge-featured{background:rgba(229,57,53,0.15);color:#E53935;border:1px solid rgba(229,57,53,0.2)}
+.badge-available{background:rgba(39,174,96,0.15);color:#2ecc71;border:1px solid rgba(39,174,96,0.2)}
+.badge-popular{background:rgba(243,156,18,0.15);color:#f39c12;border:1px solid rgba(243,156,18,0.2)}
+.car-info{padding:20px}
+.car-title{font-size:18px;font-weight:900;margin-bottom:3px}
+.car-meta{font-size:12px;color:#888;margin-bottom:12px}
+.car-specs{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.car-spec{font-size:11px;color:#888;display:flex;align-items:center;gap:3px;background:rgba(255,255,255,0.02);padding:3px 8px;border-radius:5px}
+.car-spec i{color:#E53935;font-size:10px}
+.car-footer{display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid #2a2a2a}
+.car-price{font-size:22px;font-weight:900;color:#E53935}
+.car-price span{font-size:12px;color:#888;font-weight:400}
+.car-btn{padding:6px 16px;background:transparent;color:#fff;border:2px solid #2a2a2a;border-radius:5px;font-weight:700;font-size:12px;cursor:pointer;transition:all .3s;font-family:'Tajawal',sans-serif}
+.car-btn:hover{background:#E53935;border-color:#E53935}
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:1000px;margin:0 auto}
+.step-card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:14px;padding:28px 20px;text-align:center;transition:all .3s}
+.step-card:hover{border-color:rgba(229,57,53,0.2);transform:translateY(-4px)}
+.step-num{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#E53935,#c62828);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;margin:0 auto 16px;color:#fff}
+.step-icon{font-size:32px;margin-bottom:14px;display:block}
+.step-title{font-size:16px;font-weight:900;margin-bottom:8px}
+.step-desc{font-size:13px;color:#888;line-height:1.5}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1000px;margin:0 auto}
+.feature-card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:14px;padding:28px;transition:all .3s}
+.feature-card:hover{border-color:rgba(229,57,53,0.2);transform:translateY(-4px)}
+.feature-icon{width:44px;height:44px;border-radius:10px;background:rgba(229,57,53,0.08);display:flex;align-items:center;justify-content:center;font-size:18px;color:#E53935;margin-bottom:16px;border:1px solid rgba(229,57,53,0.1)}
+.feature-title{font-size:16px;font-weight:900;margin-bottom:8px}
+.feature-desc{font-size:13px;color:#888;line-height:1.6}
+.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1000px;margin:0 auto}
+.review-card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:14px;padding:28px;transition:all .3s}
+.review-card:hover{border-color:rgba(229,57,53,0.1);transform:translateY(-4px)}
+.review-stars{color:#f39c12;font-size:15px;margin-bottom:14px;letter-spacing:2px}
+.review-text{font-size:14px;color:#888;line-height:1.7;margin-bottom:16px;font-style:italic}
+.review-author{display:flex;align-items:center;gap:12px}
+.review-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#E53935,#c62828);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:#fff}
+.review-name{font-weight:900;font-size:14px}
+.review-location{font-size:12px;color:#888}
+.cta-section{background:linear-gradient(135deg,#141414 0%,#0a0a0a 100%);padding:70px 30px;position:relative;overflow:hidden}
+.cta-section::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(229,57,53,0.15) 0%,transparent 70%);pointer-events:none}
+.cta-content{max-width:600px;margin:0 auto;text-align:center;position:relative;z-index:2}
+.cta-title{font-size:36px;font-weight:900;margin-bottom:16px}
+.cta-title span{color:#E53935;text-shadow:0 0 30px rgba(229,57,53,0.3)}
+.cta-subtitle{font-size:15px;color:#888;margin-bottom:28px}
+.gov-section{background:#141414}
+.gov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;max-width:1000px;margin:0 auto}
+.gov-card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:8px;transition:all .3s;cursor:pointer}
+.gov-card:hover{border-color:rgba(229,57,53,0.2);background:rgba(229,57,53,0.03)}
+.gov-card i{color:#E53935;font-size:12px}
+.gov-card span{font-size:13px;font-weight:700}
+.gov-card .count{margin-right:auto;font-size:11px;color:#888;background:rgba(255,255,255,0.03);padding:2px 6px;border-radius:50px}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;max-width:1000px;margin:0 auto}
+.contact-info h3{font-size:22px;font-weight:900;margin-bottom:14px}
+.contact-info p{color:#888;margin-bottom:28px;font-size:14px;line-height:1.6}
+.contact-item{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.contact-icon{width:40px;height:40px;border-radius:8px;background:rgba(229,57,53,0.08);display:flex;align-items:center;justify-content:center;color:#E53935;font-size:14px;border:1px solid rgba(229,57,53,0.1)}
+.contact-text{font-size:13px}
+.contact-text strong{display:block;font-weight:700;margin-bottom:2px}
+.contact-text span{color:#888}
+.contact-form{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:14px;padding:28px}
+.form-group{margin-bottom:14px}
+.form-group label{display:block;font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:12px 14px;background:#141414;border:2px solid #2a2a2a;border-radius:8px;color:#fff;font-family:'Tajawal',sans-serif;font-size:13px;outline:none}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:#E53935}
+.form-group textarea{min-height:80px;resize:vertical}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.footer{background:#141414;border-top:1px solid #2a2a2a;padding:40px 30px 20px}
+.footer-content{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:30px}
+.footer-brand .logo{margin-bottom:14px}
+.footer-brand p{color:#888;font-size:13px;line-height:1.6;margin-bottom:16px}
+.footer-social{display:flex;gap:8px}
+.footer-social a{width:32px;height:32px;border-radius:6px;background:#1a1a1a;border:1px solid #2a2a2a;display:flex;align-items:center;justify-content:center;color:#888;font-size:13px;text-decoration:none;transition:all .3s}
+.footer-social a:hover{background:#E53935;border-color:#E53935;color:#fff}
+.footer-title{font-size:14px;font-weight:900;margin-bottom:16px}
+.footer-links{list-style:none}
+.footer-links li{margin-bottom:10px}
+.footer-links a{color:#888;text-decoration:none;font-size:13px;transition:all .3s}
+.footer-links a:hover{color:#E53935}
+.footer-bottom{max-width:1000px;margin:0 auto;padding-top:20px;border-top:1px solid #2a2a2a;display:flex;justify-content:space-between;align-items:center}
+.footer-copy{color:#555;font-size:12px}
+.footer-copy span{color:#E53935}
+@media(max-width:1024px){.hero-content{grid-template-columns:1fr;text-align:center}.hero h1{font-size:36px}.hero p{margin:0 auto 30px}.hero-buttons{justify-content:center}.hero-stats{justify-content:center}.steps-grid{grid-template-columns:repeat(2,1fr)}.features-grid{grid-template-columns:repeat(2,1fr)}.reviews-grid{grid-template-columns:repeat(2,1fr)}.contact-grid{grid-template-columns:1fr}.footer-content{grid-template-columns:1fr 1fr}.search-box{grid-template-columns:1fr 1fr}.search-btn{grid-column:span 2}}
+@media(max-width:768px){.nav{display:none}.hero{padding:90px 20px 50px}.hero h1{font-size:28px}.section{padding:50px 20px}.section-title{font-size:26px}.steps-grid{grid-template-columns:1fr}.features-grid{grid-template-columns:1fr}.reviews-grid{grid-template-columns:1fr}.cars-grid{grid-template-columns:1fr}.footer-content{grid-template-columns:1fr}.search-box{grid-template-columns:1fr}.search-btn{grid-column:span 1}.contact-grid{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}.cta-title{font-size:28px}}
+.mobile-menu-btn{display:none;font-size:22px;color:#fff;cursor:pointer;background:none;border:none}@media(max-width:768px){.mobile-menu-btn{display:block}}
+</style>
+</head>
+<body>
+
+<<header class="header">
+<a href="#" class="logo">كرهب<span>تي</span></a>
+<<nav class="nav">
+<a href="#cars">السيارات</a>
+<a href="#govs">الولايات</a>
+<a href="#how">كيفاش</a>
+<a href="#why">علاش نحن</a>
+<a href="#reviews">آراء</a>
+<a href="#contact">اتصل بنا</a>
+<a href="#" class="btn btn-outline">تسجيل الدخول</a>
+<a href="#" class="btn btn-red">حط كرهبتك</a>
+</nav>
+<button class="mobile-menu-btn">☰</button>
+</header>
+
+<section class="hero">
+<div class="hero-content">
+<div>
+<div style="display:inline-flex;align-items:center;gap:6px;background:rgba(229,57,53,0.1);border:1px solid rgba(229,57,53,0.2);color:#E53935;padding:6px 14px;border-radius:50px;font-size:12px;font-weight:700;margin-bottom:20px">
+<i class="fas fa-bolt"></i> أول منصة كراء سيارات في تونس
+</div>
+<h1>كرهبتي – <span>كرهبتك</span> تكريها و تربح</h1>
+<p>كراء السيارات مباشرة من أصحابها في جميع ولايات تونس. أرخص، أوثق، و أقرب!</p>
+<div class="hero-buttons">
+<a href="#cars" class="btn btn-red" style="padding:14px 28px;font-size:15px"><i class="fas fa-search"></i> دور على كرهبة</a>
+<a href="#" class="btn btn-outline" style="padding:14px 28px;font-size:15px"><i class="fas fa-car"></i> حط كرهبتك</a>
+</div>
+<div class="hero-stats">
+<div><div class="hero-stat-number">500+</div><div class="hero-stat-label">كرهبة</div></div>
+<div><div class="hero-stat-number">12K+</div><div class="hero-stat-label">مستاجر</div></div>
+<div><div class="hero-stat-number">24</div><div class="hero-stat-label">ولاية</div></div>
+</div>
+</div>
+<div style="text-align:center">
+<<svg class="car-svg" viewBox="0 0 600 300" fill="none">
+<<defs><linearGradient id="cg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#E53935;stop-opacity:0.8"/><stop offset="100%" style="stop-color:#c62828;stop-opacity:0.6"/></linearGradient></defs>
+<<path d="M50 180 Q40 180 40 170 Q40 140 60 130 L100 110 Q130 95 180 90 L350 85 Q400 85 430 95 L480 115 Q520 130 540 150 Q560 170 560 190 Q560 200 550 200 L540 205 Q520 210 480 210 L120 210 Q80 210 60 205 Z" fill="url(#cg)" opacity="0.9"/>
+<<circle cx="140" cy="205" r="35" fill="#121212" stroke="#E53935" stroke-width="3"/><circle cx="140" cy="205" r="8" fill="#E53935"/>
+<<circle cx="460" cy="205" r="35" fill="#121212" stroke="#E53935" stroke-width="3"/><circle cx="460" cy="205" r="8" fill="#E53935"/>
+<<ellipse cx="545" cy="165" rx="15" ry="8" fill="#fff" opacity="0.8"/><ellipse cx="45" cy="165" rx="10" ry="6" fill="#E53935" opacity="0.9"/>
+<<ellipse cx="300" cy="250" rx="250" ry="15" fill="rgba(229,57,53,0.1)"/>
+</svg>
+</div>
+</div>
+</section>
+
+<section class="search-section">
+<div class="search-box">
+<div class="search-field">
+<label><i class="fas fa-map-marker-alt"></i> الولاية</label>
+<select id="loc">
+<option value="">كل الولايات</option>
+<option value="tunis">تونس</option>
+<option value="ariana">أريانة</option>
+<option value="benarous">بن عروس</option>
+<option value="manouba">منوبة</option>
+<option value="nabeul">نابل</option>
+<option value="zaghouan">زغوان</option>
+<option value="bizerte">بنزرت</option>
+<option value="beja">باجة</option>
+<option value="jendouba">جندوبة</option>
+<option value="kef">الكاف</option>
+<option value="siliana">سليانة</option>
+<option value="sousse">سوسة</option>
+<option value="monastir">المنستير</option>
+<option value="mahdia">المهدية</option>
+<option value="sfax">صفاقس</option>
+<option value="kairouan">القيروان</option>
+<option value="kasserine">القصرين</option>
+<option value="sidi-bouzid">سيدي بوزيد</option>
+<option value="gabes">قابس</option>
+<option value="medenine">مدنين</option>
+<option value="tataouine">تطاوين</option>
+<option value="gafsa">قفصة</option>
+<option value="tozeur">توزر</option>
+<option value="kebili">قبلي</option>
+</select>
+</div>
+<div class="search-field">
+<label><i class="fas fa-calendar"></i> تاريخ الاستلام</label>
+<input type="date" id="pickup">
+</div>
+<div class="search-field">
+<label><i class="fas fa-calendar-check"></i> تاريخ التسليم</label>
+<input type="date" id="ret">
+</div>
+<button class="search-btn" onclick="searchCars()"><i class="fas fa-search"></i> دور</button>
+</div>
+</section>
+
+<section class="section gov-section" id="govs">
+<h2 class="section-title">24 ولاية تونسية</h2>
+<p class="section-subtitle">كرهبتك متاحة في جميع ولايات الجمهورية التونسية</p>
+<div class="gov-grid" id="govGrid"></div>
+</section>
+
+<section class="section" id="cars">
+<h2 class="section-title">سيارات مميزة</h2>
+<p class="section-subtitle">من الاقتصادية إلى الفاخرة، اعثر على السيارة المثالية</p>
+<div class="cars-grid" id="carGrid"></div>
+</section>
+
+<section class="section" id="how" style="background:#141414">
+<h2 class="section-title">كيفاش كرهبتي تعمل؟</h2>
+<p class="section-subtitle">أربع خطوات بسيطة باش تكون على الطريق</p>
+<div class="steps-grid">
+<div class="step-card"><div class="step-num">1</div><div class="step-icon">🔍</div><div class="step-title">دور</div><div class="step-desc">تصفح السيارات المتحقق منها في جميع أنحاء تونس</div></div>
+<div class="step-card"><div class="step-num">2</div><div class="step-icon">📅</div><div class="step-title">احجز</div><div class="step-desc">اختر التواريخ، اختار كرهبتك، واحجز فوراً</div></div>
+<div class="step-card"><div class="step-num">3</div><div class="step-icon">🚗</div><div class="step-title">سوق</div><div class="step-desc">استلم كرهبتك واستمتع برحلتك مع تأمين شامل</div></div>
+<div class="step-card"><div class="step-num">4</div><div class="step-icon">⭐</div><div class="step-title">قيّم</div><div class="step-desc">رجع الكرهبة وشارك تجربتك</div></div>
+</div>
+</section>
+
+<section class="section" id="why">
+<h2 class="section-title">علاش تختار كرهبتي؟</h2>
+<p class="section-subtitle">نحن نضع سلامتك و راحتك في المقام الأول</p>
+<div class="features-grid">
+<div class="feature-card"><div class="feature-icon"><i class="fas fa-shield-alt"></i></div><div class="feature-title">مؤمنة بالكامل</div><div class="feature-desc">كل كراء يشمل تأمين شامل</div></div>
+<div class="feature-card"><div class="feature-icon"><i class="fas fa-user-check"></i></div><div class="feature-title">أصحاب متحقق منهم</div><div class="feature-desc">جميع الأصحاب متحقق من هويتهم</div></div>
+<div class="feature-card"><div class="feature-icon"><i class="fas fa-tags"></i></div><div class="feature-title">أفضل الأسعار</div><div class="feature-desc">سيارات أفضل بأسعار أقل</div></div>
+<div class="feature-card"><div class="feature-icon"><i class="fas fa-headset"></i></div><div class="feature-title">دعم 24/7</div><div class="feature-desc">فريقنا جاهز دائماً</div></div>
+<div class="feature-card"><div class="feature-icon"><i class="fas fa-map-marked-alt"></i></div><div class="feature-title">تغطية وطنية</div><div class="feature-desc">24 ولاية من تونس إلى قبلي</div></div>
+<div class="feature-card"><div class="feature-icon"><i class="fas fa-star"></i></div><div class="feature-title">اختيار متميز</div><div class="feature-desc">من الاقتصادية إلى الرياضية</div></div>
+</div>
+</section>
+
+<section class="section" id="reviews" style="background:linear-gradient(180deg,#141414 0%,#0a0a0a 100%)">
+<h2 class="section-title">شنوا يقولو علينا؟</h2>
+<p class="section-subtitle">آراء حقيقية من مستأجرين في جميع أنحاء تونس</p>
+<div class="reviews-grid">
+<div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"تجربة رائعة! كريت BMW لرحلة نهاية الأسبوع. صاحب الكرهبة كان متعاون جداً!"</p><div class="review-author"><div class="review-avatar">أم</div><div><div class="review-name">أحمد م.</div><div class="review-location">تونس العاصمة</div></div></div></div>
+<div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"حطيت كرهبتي في كرهبتي ونربح 800 دينار في الشهر. أنصح بها بشدة!"</p><div class="review-author"><div class="review-avatar">سك</div><div><div class="review-name">سارة ك.</div><div class="review-location">سوسة</div></div></div></div>
+<div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"لقيت بيجو رائعة بنصف سعر المكاتب. صاحب الكرهبة حتى وصلها للفندق!"</p><div class="review-author"><div class="review-avatar">يب</div><div><div class="review-name">يوسف ب.</div><div class="review-location">صفاقس</div></div></div></div>
+</div>
+</section>
+
+<section class="cta-section">
+<div class="cta-content">
+<h2 class="cta-title">مستعد للطريق؟ <span>ابدأ اليوم.</span></h2>
+<p class="cta-subtitle">انضم إلى آلاف المستأجرين وأصحاب السيارات السعداء</p>
+<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+<a href="#cars" class="btn btn-red" style="padding:14px 28px"><i class="fas fa-search"></i> دور على كرهبة</a>
+<a href="#" class="btn btn-outline" style="padding:14px 28px"><i class="fas fa-car"></i> حط كرهبتك</a>
+</div>
+</div>
+</section>
+
+<section class="section" id="contact">
+<h2 class="section-title">اتصل بنا</h2>
+<p class="section-subtitle">عندك سؤال؟ فريقنا جاهز يساعدك</p>
+<div class="contact-grid">
+<div class="contact-info">
+<h3>نحكيو</h3>
+<p>إنت مستاجر، صاحب كرهبة، أو بس نحب تعرف أكثر</p>
+<div class="contact-item"><div class="contact-icon"><i class="fas fa-phone"></i></div><div class="contact-text"><strong>الهاتف</strong><span>+216 XX XXX XXX</span></div></div>
+<div class="contact-item"><div class="contact-icon"><i class="fas fa-envelope"></i></div><div class="contact-text"><strong>البريد</strong><span>contact@karhebti.tn</span></div></div>
+<div class="contact-item"><div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div><div class="contact-text"><strong>العنوان</strong><span>تونس، الجمهورية التونسية</span></div></div>
+<div class="contact-item"><div class="contact-icon"><i class="fas fa-clock"></i></div><div class="contact-text"><strong>ساعات العمل</strong><span>السبت - الخميس: 8ص - 8م</span></div></div>
+</div>
+<div class="contact-form">
+<form onsubmit="event.preventDefault();alert('تم إرسال الرسالة!');">
+<div class="form-row">
+<div class="form-group"><label>الاسم</label><input type="text" placeholder="اسمك" required></div>
+<div class="form-group"><label>اللقب</label><input type="text" placeholder="لقبك" required></div>
+</div>
+<div class="form-group"><label>البريد</label><input type="email" placeholder="بريدك@example.com" required></div>
+<div class="form-group"><label>الرسالة</label><textarea placeholder="كيفاش نقدر نساعدك؟" required></textarea></div>
+<button type="submit" class="btn btn-red" style="width:100%"><i class="fas fa-paper-plane"></i> إرسال</button>
+</form>
+</div>
+</div>
+</section>
+
+<<footer class="footer">
+<div class="footer-content">
+<div class="footer-brand">
+<div class="logo" style="font-size:22px">كرهب<span>تي</span></div>
+<p>أول منصة كراء سيارات من نظير إلى نظير في تونس</p>
+<div class="footer-social">
+<a href="#"><i class="fab fa-facebook-f"></i></a>
+<a href="#"><i class="fab fa-instagram"></i></a>
+<a href="#"><i class="fab fa-twitter"></i></a>
+</div>
+</div>
+<div><div class="footer-title">الشركة</div><ul class="footer-links"><li><a href="#">من نحن</a></li><li><a href="#">وظائف</a></li><li><a href="#">مدونة</a></li></ul></div>
+<div><div class="footer-title">الدعم</div><ul class="footer-links"><li><a href="#">مركز المساعدة</a></li><li><a href="#">السلامة</a></li><li><a href="#">اتصل بنا</a></li></ul></div>
+<div><div class="footer-title">قانوني</div><ul class="footer-links"><li><a href="#">الشروط</a></li><li><a href="#">الخصوصية</a></li></ul></div>
+</div>
+<div class="footer-bottom">
+<div class="footer-copy">© 2026 <span>كرهبتي</span>. جميع الحقوق محفوظة.</div>
+<div style="display:flex;gap:16px;color:#555;font-size:12px"><span>الخصوصية</span><span>الشروط</span></div>
+</div>
+</footer>
+
+<script>
+const cars=[
+{id:1,img:"https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=500&fit=crop",title:"BMW X5",year:2023,loc:"تونس",price:250,rat:4.9,rev:28,badge:"badge-featured",bt:"مميزة",specs:{s:5,f:"ديزل",t:"أوتوماتيك",ty:"SUV"}},
+{id:2,img:"https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=800&h=500&fit=crop",title:"مرسيدس C-Class",year:2022,loc:"سوسة",price:180,rat:4.8,rev:42,badge:"badge-popular",bt:"شائعة",specs:{s:5,f:"بنزين",t:"أوتوماتيك",ty:"سيدان"}},
+{id:3,img:"https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=800&h=500&fit=crop",title:"بيجو 208",year:2023,loc:"صفاقس",price:80,rat:4.7,rev:35,badge:"badge-available",bt:"متاحة",specs:{s:5,f:"بنزين",t:"يدوي",ty:"هاتشباك"}},
+{id:4,img:"https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&h=500&fit=crop",title:"بورش 911",year:2022,loc:"تونس",price:450,rat:5.0,rev:15,badge:"badge-featured",bt:"فاخرة",specs:{s:2,f:"بنزين",t:"أوتوماتيك",ty:"رياضية"}},
+{id:5,img:"https://images.unsplash.com/photo-1550355291-bbee04a92027?w=800&h=500&fit=crop",title:"رونو داستر",year:2021,loc:"نابل",price:90,rat:4.6,rev:56,badge:"badge-available",bt:"متاحة",specs:{s:5,f:"ديزل",t:"يدوي",ty:"SUV"}},
+{id:6,img:"https://images.unsplash.com/photo-1563720223185-11003d516935?w=800&h=500&fit=crop",title:"أودي A4",year:2023,loc:"أريانة",price:200,rat:4.9,rev:19,badge:"badge-popular",bt:"شائعة",specs:{s:5,f:"ديزل",t:"أوتوماتيك",ty:"واجن"}}
+];
+
+const governorates=[
+{name:"تونس",count:45},{name:"أريانة",count:32},{name:"بن عروس",count:28},{name:"منوبة",count:15},
+{name:"نابل",count:22},{name:"زغوان",count:8},{name:"بنزرت",count:18},{name:"باجة",count:12},
+{name:"جندوبة",count:10},{name:"الكاف",count:9},{name:"سليانة",count:7},{name:"سوسة",count:38},
+{name:"المنستير",count:25},{name:"المهدية",count:14},{name:"صفاقس",count:35},{name:"القيروان",count:16},
+{name:"القصرين",count:11},{name:"سيدي بوزيد",count:13},{name:"قابس",count:19},{name:"مدنين",count:17},
+{name:"تطاوين",count:6},{name:"قفصة",count:10},{name:"توزر",count:8},{name:"قبلي",count:9}
+];
+
+function renderCars(list){
+const g=document.getElementById('carGrid');
+g.innerHTML=list.map(c=>`
+<div class="car-card" onclick="alert('تفاصيل: ${c.title} - ${c.price} د.ت/يوم')">
+<div class="car-img">
+<img src="${c.img}" alt="${c.title}" loading="lazy">
+<span class="car-badge ${c.badge}">${c.bt}</span>
+</div>
+<div class="car-info">
+<div class="car-title">${c.title}</div>
+<div class="car-meta">${c.year} • ${c.loc} • ${c.specs.ty}</div>
+<div class="car-specs">
+<span class="car-spec"><i class="fas fa-user"></i> ${c.specs.s} مقاعد</span>
+<span class="car-spec"><i class="fas fa-gas-pump"></i> ${c.specs.f}</span>
+<span class="car-spec"><i class="fas fa-cog"></i> ${c.specs.t}</span>
+</div>
+<div class="car-footer">
+<div class="car-price">${c.price} <span>د.ت/يوم</span></div>
+<button class="car-btn" onclick="event.stopPropagation();alert('حجز: ${c.title}')">احجز</button>
+</div>
+</div>
+</div>`).join('');
+}
+
+function renderGovs(){
+const g=document.getElementById('govGrid');
+g.innerHTML=governorates.map(gov=>`
+<div class="gov-card" onclick="searchGov('${gov.name}')">
+<i class="fas fa-map-marker-alt"></i>
+<span>${gov.name}</span>
+<span class="count">${gov.count} كرهبة</span>
+</div>`).join('');
+}
+
+function searchGov(name){
+document.getElementById('loc').value=name.toLowerCase().replace(' ','-');
+searchCars();
+}
+
+function searchCars(){
+const loc=document.getElementById('loc').value;
+let f=cars;
+if(loc)f=cars.filter(c=>c.loc.toLowerCase().includes(loc.toLowerCase())||loc==='');
+renderCars(f);
+document.getElementById('cars').scrollIntoView({behavior:'smooth'});
+if(f.length===0)document.getElementById('carGrid').innerHTML='<div class="empty-state" style="grid-column:1/-1"><div class="empty-state-icon">🔍</div><h3>ما لقيناش كرهبات</h3><p>جرب ولاية أخرى</p></div>';
+}
+
+const t=new Date();
+const tm=new Date(t);tm.setDate(tm.getDate()+1);
+document.getElementById('pickup').valueAsDate=t;
+document.getElementById('ret').valueAsDate=tm;
+renderCars(cars);
+renderGovs();
+window.addEventListener('scroll',()=>{
+document.querySelector('.header').style.background=window.scrollY>50?'rgba(10,10,10,0.95)':'transparent';
+});
+</script>
+</body>
+</html>
